@@ -9,6 +9,8 @@ const firebaseConfig = {
   firebase.initializeApp(firebaseConfig);
   var db = firebase.database()
 
+var boardFlip = false
+
 var clickedIdOne = ""
 var clickedIdTwo = ""
 
@@ -100,28 +102,76 @@ db.ref("chessPosition").on("value", function(chessPositionDB) {
     chessPosition = chessPositionDB.val()
     chessListToBoard()
 });
-function chessListToBoard() {
-    for (var i = 0; i < chessPosition.length; i++) {
-        document.getElementById(i+1).style.backgroundImage = `url("${chessPosition[i]}")`
-        //Do something
+db.ref("movesCounter").on("value", function(movesCounter) {
+    document.querySelector(".moves-counter").textContent = movesCounter.val()
+    if(parseInt(movesCounter.val()) % 2 == 0) {
+        document.querySelector(".turn-counter").textContent = "Whites Turn"
     }
+    else {
+        document.querySelector(".turn-counter").textContent = "Blacks Turn"
+    }
+});
+
+document.querySelector(".flip-board").addEventListener("click", function() {
+    if (boardFlip == true) {
+        boardFlip = false
+        console.log(boardFlip)
+        chessListToBoard()
+    }
+    else {
+        boardFlip = true
+        console.log(boardFlip)
+        chessListToBoard()
+    }
+})
+function chessListToBoard() {
+    if (boardFlip == true) {
+        flippedBoard = chessPosition.reverse()
+        for (var i = 0; i < flippedBoard.length; i++) {
+            document.getElementById(i+1).style.backgroundImage = `url("${flippedBoard[i]}")`
+            //Do something
+        }
+    }
+    else if (boardFlip == false) {
+        for (var i = 0; i < chessPosition.length; i++) {
+            document.getElementById(i+1).style.backgroundImage = `url("${chessPosition[i]}")`
+            //Do something
+        }
+    }
+}
+
+function squareStopClick() {
+    document.getElementById(clickedIdOne).style.backgroundColor = clickedIdOneBgColor
+    document.getElementById(clickedIdOne).style.borderRadius = "0px"
+    clickedIdOne = ""
+    clickedIdTwo = ""
+    clickedIdOneBgColor = ""
 }
 
 function squareClick(elementID) {
     if (clickedIdOne == "") {
         // this means they have only clicked once, to select there piece to move
         clickedIdOne = parseInt(elementID)
+        clickedIdOneBgColor = document.getElementById(clickedIdOne).style.backgroundColor
+        document.getElementById(clickedIdOne).style.backgroundColor = "#4cb6a3"
+        document.getElementById(clickedIdOne).style.borderRadius = "10px"
     }
     else {
         // this means they clicked a square to select and have now clicked another square to move (selection: clickedIdOne, move: clickedIdTwo)
         clickedIdTwo = parseInt(elementID)
         console.log(clickedIdOne, clickedIdTwo)
+        document.getElementById(clickedIdOne).style.backgroundColor = clickedIdOneBgColor
+        document.getElementById(clickedIdOne).style.borderRadius = "0px"
         chessPosition[clickedIdTwo-1] = chessPosition[clickedIdOne-1]
         chessPosition[clickedIdOne-1] = ""
         clickedIdOne = ""
+        clickedIdOneBgColor = ""
         clickedIdTwo = ""
         chessListToBoard()
         db.ref("chessPosition").set(chessPosition)
+        db.ref("movesCounter").transaction(function(currentValue) {
+            return currentValue + 1;
+        });
     }
 }
 

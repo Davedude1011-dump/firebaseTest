@@ -117,7 +117,6 @@ function leavePage() {
 }
 
 window.onload = function() {
-    db.ref("chessPosition").set(chessPosition)
     db.ref("everyoneLeave").set(false)
     db.ref("chessList").on("value", function(chessLayout) {
         // so when the chess input gets changed by the .set() somehow it auto does this: (dont ask me how it just works so ima go along with it :))
@@ -133,6 +132,8 @@ window.onload = function() {
         if (playerNum.val() == 2) {
             console.log(inQueue)
             if (inQueue == true) {
+                db.ref("chessPosition").set(chessPosition)
+                db.ref("movesCounter").set(0)
                 window.open("chessPage.html", "_self")
             }
         }
