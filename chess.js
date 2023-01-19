@@ -1,3 +1,19 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyCJ9d9p1Uo-JfYhGB4DiPdYnsK-5SqdN14",
+    authDomain: "fir-test-project-6d0f4.firebaseapp.com",
+    projectId: "fir-test-project-6d0f4",
+    storageBucket: "fir-test-project-6d0f4.appspot.com",
+    messagingSenderId: "76332056244",
+    appId: "1:76332056244:web:c443c8497d7f759758e1e1"
+  };
+  firebase.initializeApp(firebaseConfig);
+  var db = firebase.database()
+
+var clickedIdOne = ""
+var clickedIdTwo = ""
+
+var yourTurn = false
+
 var pieceToSvg = {
     blackPawn: "data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 180 180' style='enable-background:new 0 0 180 180;' xml:space='preserve'%3E%3Cdefs%3E%3Cstyle%3E%0A.cls-1%7Bfill:none;%7D.cls-2%7Bfill:%234e4c4b;%7D.cls-3,.cls-4%7Bopacity:0.2;%7D.cls-4%7Bfill:%23fff;%7D.cls-5%7Bfill:%231a1a1a;%7D%3C/style%3E%3C/defs%3E%3Ctitle%3Ep%3C/title%3E%3Crect class='cls-1' width='180' height='180'/%3E%3Cpath class='cls-2' d='M89.94,41.92a23,23,0,0,0-14.24,41L63.79,90.75l-.9.59v1.08a12.17,12.17,0,0,0,2,6.93l.39.72.57,1.05H77.13c-.49,5.61-2,19.66-20,31-8,5-12.66,14.66-12.66,26.36v2h91v-2c0-11.7-4.62-21.31-12.67-26.36-17.94-11.28-19.5-25.36-20-31H114l.57-1.05.39-.72a12.17,12.17,0,0,0,2-6.93V91.34l-.9-.59-11.91-7.86a23,23,0,0,0-14.24-41Z'/%3E%3Cpath class='cls-3' d='M115.16,127.11c-10.76-7.52-11.49-22.19-12.18-25.54l10.85,0,3.87-9s-11.41-9.29-17-9.46l2.75,0s8.21-6.84,8.92-12.88C115.25,46.21,96.3,43,96.3,43c8.58,4.29,15.07,18.92,7.34,29.82C98.12,80.61,87.34,83,87.34,83h13.3c.16.14,9.38,10-.1,16.16H65.12l.45,2.5,11.45,0S90.26,115,101.23,125.37c10.53,9.93,26.51,11.31,26.51,11.31S120.63,130.94,115.16,127.11Z'/%3E%3Cpath class='cls-4' d='M75,92.42C75.6,88,79.14,83,79.24,83L62.47,92.42Z'/%3E%3Cpath class='cls-4' d='M92.05,44c-8,.72-20.82,10.3-22.32,30,0,0-8.08-11.62,3.06-24.45C81.56,39.5,92.05,44,92.05,44Z'/%3E%3Cpath class='cls-4' d='M46.45,158.45C50.8,144.15,57,142.3,68.3,134c7.54-5.48,8.55-22,8.55-22,.18-.86-3.84,6.67-8.12,10.4-1.41,1.22-11,7.84-15.07,12.17C46.55,142.07,45.61,161.19,46.45,158.45Z'/%3E%3Cpath class='cls-5' d='M89.94,43.92a21,21,0,0,1,11.79,38.29l-1.09.75L115,92.42c0,3.06-.72,4-2.15,6.7h-12.3l.1,1c.49,4.57.8,20.93,21.06,33.66,7.45,4.68,11.73,13.68,11.73,24.67h-87c0-11,4.27-20,11.73-24.67,20.3-12.76,20.58-29.1,21.06-33.66l.1-1H67c-1.42-2.65-2.15-3.64-2.15-6.7L79.24,83l-1.09-.74a21,21,0,0,1,11.79-38.3m0-4A25,25,0,0,0,72.42,82.66l-9.73,6.42-1.8,1.19v2.15a14.13,14.13,0,0,0,2.24,7.89l.39.71,1.13,2.1H74.88c-2.49,17-14.27,24.41-18.83,27.27-8.65,5.43-13.6,15.66-13.6,28.06v4h95v-4c0-12.4-5-22.63-13.6-28.06-15.11-9.49-18-21-18.86-27.27h10.26l1.13-2.1.39-.71A14.13,14.13,0,0,0,119,92.42V90.27l-1.8-1.19-9.73-6.42A25,25,0,0,0,89.94,39.92Z'/%3E%3C/svg%3E ",
     blackRook: "data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 180 180' style='enable-background:new 0 0 180 180;' xml:space='preserve'%3E%3Cdefs%3E%3Cstyle%3E%0A.clsR-1%7Bfill:%234e4c4b;%7D.clsR-2,.clsR-3%7Bfill:%23fff;%7D.clsR-2,.clsR-4%7Bopacity:0.2;%7D.clsR-3%7Bopacity:0.3;%7D.clsR-5%7Bfill:%231a1a1a;%7D.clsR-6%7Bfill:none;%7D%3C/style%3E%3C/defs%3E%3Ctitle%3Er%3C/title%3E%3Cpath class='clsR-1' d='M90,30.87a92.56,92.56,0,0,0-10.56.85l-1.45.2-.25,1.44L74.87,50.28H70L64.84,35.53l-.47-1.34H63a31.07,31.07,0,0,0-14.88,3.72l-1.15.62.1,1.31L48.68,60v.1c1,7.21,4.68,11.7,11.93,14.38-1,8.58-5.74,48.89-6.95,58.44-14.51,3.42-14.49,12.94-14.46,23.92v3.62H140.78v-3.62c0-11,.06-20.5-14.46-23.92-1.2-9.55-5.94-49.86-6.95-58.44,7.26-2.68,11-7.17,11.94-14.38V60L133,39.84l.11-1.31-1.15-.62A31.08,31.08,0,0,0,117,34.19h-1.41l-.47,1.34L110,50.28h-4.85l-2.87-16.92L102,31.92l-1.45-.2A92.56,92.56,0,0,0,90,30.87Z'/%3E%3Cpath class='clsR-2' d='M90,138.41c43.07,0,47.54,4.75,47.54,4.75h.59c-1.93-10.18-24.49-11.3-24.49-11.3H66.53s-23.36.81-24.66,11.3h.59S46.93,138.41,90,138.41Z'/%3E%3Cpath class='clsR-3' d='M60,34.43c-10.75,7.36-6.7,34.9-6.7,34.9-6.85-2.21-6.7-31.73-6.7-31.73S63.08,32.34,60,34.43Z'/%3E%3Cpath class='clsR-3' d='M93.18,32.26c-12,2.19-16.62,19.64-16.62,19.64.8-13,3.52-20.54,3.52-20.54S96.59,31.63,93.18,32.26Z'/%3E%3Cpath class='clsR-3' d='M125.15,35.88c-7.77,4.11-13.75,16-13.75,16-.44-4.24,5.47-19,5.47-19S128.05,34.35,125.15,35.88Z'/%3E%3Cpath class='clsR-4' d='M123.87,72.17c10.62.24,8.73-32.78,8.73-32.78l-6.36-4c-1.76,10.55-4,26.9-9.16,31.43-4.71,4.15-7.59,5.12-8.31,5.3-1.37-.17-2.83-.33-4.43-.47-14.5-1.32-35.6,2.82-35.6,2.82s21.37-1.3,32.3,12.42,12,43.37,12,43.37c7.16,1.33,12.49,2.8,12.49,2.8l-6.73-57.46S122.46,72.14,123.87,72.17Z'/%3E%3Cpath class='clsR-5' d='M140.65,140.76c-2.2-4.67-6.21-7.71-12.51-9.45-1.35-10.88-5.36-45-6.6-55.54,7.06-3,10.73-7.87,11.75-15.41v-.21L135,40l.21-2.61-2.3-1.24a33.05,33.05,0,0,0-15.84-4h-3.19l-.71,3.12-2.93,13H105l-1.74-15-.35-3-3-.49A72.25,72.25,0,0,0,90,28.87a72.06,72.06,0,0,0-9.94.88l-3,.49-.35,3L75,48.28h-5.2l-2.93-13-.71-3.12H63a33,33,0,0,0-15.83,4l-2.3,1.24L45,40l1.66,20.15v.21c1,7.54,4.68,12.39,11.75,15.41-1.24,10.54-5.26,44.66-6.6,55.54-6.31,1.74-10.32,4.78-12.51,9.45s-2.15,9.91-2.14,16.07v5.62H142.78v-5.62C142.8,150.68,142.81,145.36,140.65,140.76Zm-90-80.94L49,39.67A28.93,28.93,0,0,1,63,36.19L66.6,52.28h12L80.71,33.7A67.28,67.28,0,0,1,90,32.87a67.28,67.28,0,0,1,9.29.83l2.15,18.58h12L117,36.19A29,29,0,0,1,131,39.67l-1.66,20.15c-.77,5.74-3.29,10-10.52,12.73A234.34,234.34,0,0,0,90,70a234.67,234.67,0,0,0-28.8,2.54C54,69.84,51.45,65.56,50.67,59.82Zm11.74,16.6A231,231,0,0,1,90,74a230.47,230.47,0,0,1,27.59,2.41c1.21,10.31,4.93,41.88,6.41,54-.69-.12-1.4-.23-2.14-.32A254,254,0,0,0,90,128.41a254,254,0,0,0-31.86,1.69c-.75.09-1.45.2-2.14.32C57.48,118.3,61.2,86.73,62.41,76.42Zm76.37,82H41.22c0-11.85-.67-20.31,12.69-23.53l.34-.09,1-.21c1-.22,2.16-.4,3.37-.56A252.6,252.6,0,0,1,90,132.41a252.6,252.6,0,0,1,31.36,1.65c1.18.15,2.28.34,3.31.54l1.1.24.23,0C139.45,138.1,138.78,146.58,138.78,158.45Z'/%3E%3Crect class='clsR-6' width='180' height='180'/%3E%3C/svg%3E%0A",
@@ -79,81 +95,56 @@ var chessPosition = [
     pieceToSvg.blackKnight,
     pieceToSvg.blackRook,
 ]
-
-const web_title = "test messaging app"
-
-var numOfPlayers = 0
-var inQueue = false
-
-var gameOn = false
-
-const firebaseConfig = {
-    apiKey: "AIzaSyCJ9d9p1Uo-JfYhGB4DiPdYnsK-5SqdN14",
-    authDomain: "fir-test-project-6d0f4.firebaseapp.com",
-    projectId: "fir-test-project-6d0f4",
-    storageBucket: "fir-test-project-6d0f4.appspot.com",
-    messagingSenderId: "76332056244",
-    appId: "1:76332056244:web:c443c8497d7f759758e1e1"
-  };
-  firebase.initializeApp(firebaseConfig);
-  var db = firebase.database()
-
-function unReadyUp() {
-    document.getElementById("playerReadyUp").removeEventListener("mouseover", function() { document.getElementById("playerReadyUpInner").textContent = "- Leave Queue -" })
-    document.getElementById("playerReadyUp").removeEventListener("mouseleave", function() { document.getElementById("playerReadyUpInner").textContent = "Waiting For An Opponent..." })
-    document.getElementById("playerReadyUp").removeEventListener("click", unReadyUp)
-    document.getElementById("playerReadyUp").addEventListener("click", playerReadyUp)
-    document.getElementById("playerReadyUp").addEventListener("mouseover", function() { document.getElementById("playerReadyUpInner").textContent = "Ready Up" })
-    document.getElementById("playerReadyUp").addEventListener("mouseleave", function() { document.getElementById("playerReadyUpInner").textContent = "Ready Up" })
-    document.getElementById("playerReadyUpInner").textContent = "Ready Up"
-    db.ref("numOfPlayers").set(numOfPlayers -= 1)
-    inQueue = false
+db.ref("chessPosition").on("value", function(chessPositionDB) {
+    console.log("resigned from system")
+    chessPosition = chessPositionDB.val()
+    chessListToBoard()
+});
+function chessListToBoard() {
+    for (var i = 0; i < chessPosition.length; i++) {
+        document.getElementById(i+1).style.backgroundImage = `url("${chessPosition[i]}")`
+        //Do something
+    }
 }
 
-function leavePage() {
-    if (inQueue == true) {
-        unReadyUp()
+function squareClick(elementID) {
+    if (clickedIdOne == "") {
+        // this means they have only clicked once, to select there piece to move
+        clickedIdOne = parseInt(elementID)
+    }
+    else {
+        // this means they clicked a square to select and have now clicked another square to move (selection: clickedIdOne, move: clickedIdTwo)
+        clickedIdTwo = parseInt(elementID)
+        console.log(clickedIdOne, clickedIdTwo)
+        chessPosition[clickedIdTwo-1] = chessPosition[clickedIdOne-1]
+        chessPosition[clickedIdOne-1] = ""
+        clickedIdOne = ""
+        clickedIdTwo = ""
+        chessListToBoard()
+        db.ref("chessPosition").set(chessPosition)
     }
 }
 
 window.onload = function() {
-    db.ref("chessPosition").set(chessPosition)
-    db.ref("everyoneLeave").set(false)
-    db.ref("chessList").on("value", function(chessLayout) {
-        // so when the chess input gets changed by the .set() somehow it auto does this: (dont ask me how it just works so ima go along with it :))
-    
-        // chessLayout = the chessPosition that i passed to the server
-        console.log(chessLayout.val());
-    });
-
-    db.ref("numOfPlayers").on("value", function(playerNum) {
-        numOfPlayers = playerNum.val()
-        document.getElementById("playersReadySpan").textContent = playerNum.val()
-        console.log(playerNum.val())
-        if (playerNum.val() == 2) {
-            console.log(inQueue)
-            if (inQueue == true) {
-                window.open("chessPage.html", "_self")
+    db.ref("numOfPlayers").set(2)
+    chessListToBoard()
+}
+// forces everyone out the game when everyone leave value turns true
+db.ref("everyoneLeave").once("value", function(everyoneLeave) {
+    if (everyoneLeave.val() == false) {
+        db.ref("everyoneLeave").on("value", function(everyoneLeave) {
+            console.log("resigned from system")
+            if (everyoneLeave.val() == true) {
+                window.open("index.html", "_self")
             }
-        }
-    });
+        });
+    }
+});
 
+document.querySelector(".resign-btn").addEventListener("click", endOfGame)
+function endOfGame() {
+    console.log("resigned")
+    db.ref("numOfPlayers").set(0)
+    db.ref("everyoneLeave").set(true)
 }
 
-document.getElementById("playerReadyUp").addEventListener("click", playerReadyUp)
-    function playerReadyUp() {
-        if (numOfPlayers != 2 && inQueue == false) {
-            inQueue = true
-            db.ref("numOfPlayers").set(numOfPlayers += 1)
-            document.getElementById("playerReadyUpInner").textContent = "Leave Queue"
-            document.getElementById("playerReadyUp").addEventListener("mouseover", function() { document.getElementById("playerReadyUpInner").textContent = "- Leave Queue -" })
-            document.getElementById("playerReadyUp").addEventListener("mouseleave", function() { document.getElementById("playerReadyUpInner").textContent = "Waiting For An Opponent..." })
-            document.getElementById("playerReadyUp").removeEventListener("click", playerReadyUp)
-            document.getElementById("playerReadyUp").addEventListener("click", unReadyUp)
-        }
-        else {
-            //pressing ready up when the game is already on
-            // no can do mister
-            alert("Game In Progress, Please check back in later :)")
-        }
-    }
